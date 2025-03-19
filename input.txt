@@ -1,0 +1,4 @@
+signup(string, string) -> HTTPResponseCode
+login(string, string) -> HTTPResponseCode
+isAuthenticated login(userID, password) -> 200, HTTP_OK
+createProgram(int, string) -> HTTPResponseCode
