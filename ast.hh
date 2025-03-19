@@ -53,12 +53,11 @@ public:
 
 // API Call Node
 class APICallNode : public ASTNode {
-public:
-    unique_ptr<FuncCallNode> funcCall;
-    unique_ptr<ExprNode> response;
-    APICallNode(unique_ptr<FuncCallNode> call, unique_ptr<ExprNode> resp);
-    void print() const override;
-};
+    public:
+        unique_ptr<FuncCallNode> funcCall;
+        APICallNode(unique_ptr<FuncCallNode> call);
+        void print() const override;
+    };
 
 // Block Node (represents a complete API block)
 class BlockNode : public ASTNode {
@@ -81,12 +80,12 @@ public:
 };
 
 // Type Expression Node
-class TypeExprNode : public ASTNode {
-public:
-    string type;
-    TypeExprNode(const string &t);
-    void print() const override;
-};
+class TypeExprNode : public ExprNode {  // Changed to inherit from ExprNode instead of ASTNode
+    public:
+        string type;
+        TypeExprNode(const string &t);
+        void print() const override;
+    };
 
 // Specification Node (root node)
 class SpecNode : public ASTNode {

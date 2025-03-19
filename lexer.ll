@@ -47,6 +47,17 @@ void yyerror(const char *s);
     /* Comments (ignore) */
 "//".*     { /* Ignore single-line comments */ }
 
+    /* multi line comments */
+"/*"       { /* Start of multi-line comment */
+              int c;
+              while((c = input_stream->get()) != EOF) {
+                if(c == '*' && input_stream->peek() == '/') {
+                  input_stream->get(); /* consume the '/' */
+                  break;
+                }
+              }
+            }
+
     /* Whitespace (ignore) */
 [\t\r\n ]+  { /* Ignore whitespace */ }
 

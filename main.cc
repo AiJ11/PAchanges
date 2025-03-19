@@ -57,14 +57,14 @@ int main(int argc, char* argv[]) {
     }
     
     // Parse the input
-    yyparse();
-    
-    if (root) {
-        std::cout << "\nAbstract Syntax Tree (AST):\n";
-        root->print();
-    } else {
-        std::cout << "Parsing failed! No AST generated.\n";
-    }
+int parseResult = yyparse();
+
+if (parseResult == 0 && root) {  // 0 indicates successful parsing
+    std::cout << "\nAbstract Syntax Tree (AST):\n";
+    root->print();
+} else {
+    std::cout << "Parsing failed! No AST generated.\n";
+}
     
     return 0;
 }

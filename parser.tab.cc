@@ -77,10 +77,11 @@
 
 void yyerror(const char *s);
 int yylex();
+extern char* yytext;  // Add this line to declare yytext
 using namespace std;
 unique_ptr<SpecNode> root; // Root node of AST
 
-#line 84 "parser.tab.cc"
+#line 85 "parser.tab.cc"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -124,12 +125,9 @@ enum yysymbol_kind_t
   YYSYMBOL_UNKNOWN = 13,                   /* UNKNOWN  */
   YYSYMBOL_YYACCEPT = 14,                  /* $accept  */
   YYSYMBOL_start = 15,                     /* start  */
-  YYSYMBOL_func_decl = 16,                 /* func_decl  */
-  YYSYMBOL_api_call = 17,                  /* api_call  */
-  YYSYMBOL_func_call = 18,                 /* func_call  */
-  YYSYMBOL_expr = 19,                      /* expr  */
-  YYSYMBOL_response = 20,                  /* response  */
-  YYSYMBOL_block = 21                      /* block  */
+  YYSYMBOL_type_expr = 16,                 /* type_expr  */
+  YYSYMBOL_func_decl = 17,                 /* func_decl  */
+  YYSYMBOL_block = 18                      /* block  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -455,16 +453,16 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  2
+#define YYFINAL  7
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   24
+#define YYLAST   29
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  14
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  8
+#define YYNNTS  5
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  11
+#define YYNRULES  12
 /* YYNSTATES -- Number of states.  */
 #define YYNSTATES  29
 
@@ -514,10 +512,10 @@ static const yytype_int8 yytranslate[] =
 
 #if YYDEBUG
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
-static const yytype_int8 yyrline[] =
+static const yytype_uint8 yyrline[] =
 {
-       0,    48,    48,    54,    58,    66,    74,    81,    92,    93,
-      98,   106
+       0,    50,    50,    56,    60,    64,    71,    82,    83,    84,
+      89,   101,   154
 };
 #endif
 
@@ -535,8 +533,8 @@ static const char *const yytname[] =
 {
   "\"end of file\"", "error", "\"invalid token\"", "IDENTIFIER", "NUMBER",
   "STRING", "INT", "HTTP_RESPONSE_CODE", "HTTP_OK", "LPAREN", "RPAREN",
-  "COMMA", "ARROW", "UNKNOWN", "$accept", "start", "func_decl", "api_call",
-  "func_call", "expr", "response", "block", YY_NULLPTR
+  "COMMA", "ARROW", "UNKNOWN", "$accept", "start", "type_expr",
+  "func_decl", "block", YY_NULLPTR
 };
 
 static const char *
@@ -546,7 +544,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-14)
+#define YYPACT_NINF (-16)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -560,9 +558,9 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-     -14,     1,   -14,    -3,   -14,   -14,    -4,     4,     5,    -2,
-      -1,     0,     2,   -14,     5,   -14,   -14,     3,     9,    12,
-     -14,    -1,     6,   -14,     7,     8,   -14,    15,   -14
+       0,    -3,     2,   -16,   -16,    -5,     8,   -16,   -16,   -16,
+       6,   -16,   -16,   -16,     7,     9,     8,    13,    11,    12,
+      14,    15,     5,    19,   -16,   -16,    17,    16,   -16
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -570,21 +568,21 @@ static const yytype_int8 yypact[] =
    means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       2,     0,     1,     0,     3,     4,     0,     0,     0,     0,
-       0,     0,     0,    11,     0,     8,     9,     0,     0,     0,
-       6,     0,     0,    10,     0,     0,     7,     0,     5
+       2,     0,     0,     5,     6,     0,     0,     1,     3,     4,
+       0,     7,     8,     9,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,    10,    11,     0,     0,    12
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -14,   -14,   -14,   -14,   -14,   -13,    10,   -14
+     -16,   -16,   -15,    23,    27
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,     1,     4,     8,     9,    17,    13,     5
+       0,     2,    14,     3,     4
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -592,39 +590,39 @@ static const yytype_int8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-       6,     2,    15,    16,     3,    10,     7,    11,    24,    12,
-      14,    18,    22,    19,    21,    23,    25,    26,    28,     0,
-      27,     0,     0,     0,    20
+       5,    18,     7,     1,    10,     1,     6,    25,    24,    15,
+      11,    12,    13,    11,    12,    13,    19,     0,    16,     0,
+      17,    20,    21,    26,    28,     8,    22,    23,    27,     9
 };
 
 static const yytype_int8 yycheck[] =
 {
-       3,     0,     3,     4,     3,     9,     9,     3,    21,     4,
-      12,    11,     3,    11,    11,     3,    10,    10,     3,    -1,
-      12,    -1,    -1,    -1,    14
+       3,    16,     0,     3,     9,     3,     9,    22,     3,     3,
+       5,     6,     7,     5,     6,     7,     3,    -1,    11,    -1,
+      11,    10,    10,     4,     8,     2,    12,    12,    11,     2
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,    15,     0,     3,    16,    21,     3,     9,    17,    18,
-       9,     3,     4,    20,    12,     3,     4,    19,    11,    11,
-      20,    11,     3,     3,    19,    10,    10,    12,     3
+       0,     3,    15,    17,    18,     3,     9,     0,    17,    18,
+       9,     5,     6,     7,    16,     3,    11,    11,    16,     3,
+      10,    10,    12,    12,     3,    16,     4,    11,     8
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    14,    15,    15,    15,    16,    17,    18,    19,    19,
-      20,    21
+       0,    14,    15,    15,    15,    15,    15,    16,    16,    16,
+      17,    17,    18
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     0,     2,     2,     8,     3,     6,     1,     1,
-       3,     3
+       0,     2,     0,     2,     2,     1,     1,     1,     1,     1,
+       8,     8,    11
 };
 
 
@@ -1088,95 +1086,137 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* start: %empty  */
-#line 48 "parser.yy"
+#line 50 "parser.yy"
                 {
         // Initialize with empty vectors
         vector<unique_ptr<FuncDeclNode>> functions;
         vector<unique_ptr<BlockNode>> blocks;
         root = make_unique<SpecNode>(std::move(functions), std::move(blocks));
     }
-#line 1099 "parser.tab.cc"
+#line 1097 "parser.tab.cc"
     break;
 
   case 3: /* start: start func_decl  */
-#line 54 "parser.yy"
+#line 56 "parser.yy"
                       {
         // Add function declaration to the root
         root->functions.push_back(unique_ptr<FuncDeclNode>((yyvsp[0].funcDecl)));
     }
-#line 1108 "parser.tab.cc"
+#line 1106 "parser.tab.cc"
     break;
 
   case 4: /* start: start block  */
-#line 58 "parser.yy"
+#line 60 "parser.yy"
                   {
         // Add block to the root
         root->blocks.push_back(unique_ptr<BlockNode>((yyvsp[0].block)));
     }
-#line 1117 "parser.tab.cc"
+#line 1115 "parser.tab.cc"
     break;
 
-  case 5: /* func_decl: IDENTIFIER LPAREN IDENTIFIER COMMA IDENTIFIER RPAREN ARROW IDENTIFIER  */
-#line 66 "parser.yy"
-                                                                          {
-        (yyval.funcDecl) = new FuncDeclNode(*(yyvsp[-7].sval), *(yyvsp[-5].sval) + ", " + *(yyvsp[-3].sval), *(yyvsp[0].sval));
-        delete (yyvsp[-7].sval); delete (yyvsp[-5].sval); delete (yyvsp[-3].sval); delete (yyvsp[0].sval);
+  case 5: /* start: func_decl  */
+#line 64 "parser.yy"
+                {
+        // Start directly with a function declaration
+        vector<unique_ptr<FuncDeclNode>> functions;
+        vector<unique_ptr<BlockNode>> blocks;
+        functions.push_back(unique_ptr<FuncDeclNode>((yyvsp[0].funcDecl)));
+        root = make_unique<SpecNode>(std::move(functions), std::move(blocks));
     }
-#line 1126 "parser.tab.cc"
+#line 1127 "parser.tab.cc"
     break;
 
-  case 6: /* api_call: func_call ARROW response  */
-#line 74 "parser.yy"
-                             {
-        (yyval.apiCall) = new APICallNode(unique_ptr<FuncCallNode>((yyvsp[-2].funcCall)), unique_ptr<ExprNode>((yyvsp[0].response)));
+  case 6: /* start: block  */
+#line 71 "parser.yy"
+            {
+        // Start directly with a block
+        vector<unique_ptr<FuncDeclNode>> functions;
+        vector<unique_ptr<BlockNode>> blocks;
+        blocks.push_back(unique_ptr<BlockNode>((yyvsp[0].block)));
+        root = make_unique<SpecNode>(std::move(functions), std::move(blocks));
     }
-#line 1134 "parser.tab.cc"
+#line 1139 "parser.tab.cc"
     break;
 
-  case 7: /* func_call: IDENTIFIER LPAREN expr COMMA expr RPAREN  */
-#line 81 "parser.yy"
-                                             {
+  case 7: /* type_expr: STRING  */
+#line 82 "parser.yy"
+           { (yyval.expr) = new TypeExprNode("string"); }
+#line 1145 "parser.tab.cc"
+    break;
+
+  case 8: /* type_expr: INT  */
+#line 83 "parser.yy"
+          { (yyval.expr) = new TypeExprNode("int"); }
+#line 1151 "parser.tab.cc"
+    break;
+
+  case 9: /* type_expr: HTTP_RESPONSE_CODE  */
+#line 84 "parser.yy"
+                         { (yyval.expr) = new TypeExprNode("HTTPResponseCode"); }
+#line 1157 "parser.tab.cc"
+    break;
+
+  case 10: /* func_decl: IDENTIFIER LPAREN type_expr COMMA type_expr RPAREN ARROW IDENTIFIER  */
+#line 89 "parser.yy"
+                                                                        {
+        // Get type names from type expressions
+        TypeExprNode* type1 = static_cast<TypeExprNode*>((yyvsp[-5].expr));
+        TypeExprNode* type2 = static_cast<TypeExprNode*>((yyvsp[-3].expr));
+        
+        (yyval.funcDecl) = new FuncDeclNode(*(yyvsp[-7].sval), type1->type + ", " + type2->type, *(yyvsp[0].sval));
+        delete (yyvsp[-7].sval); delete (yyvsp[0].sval);
+        
+        // TypeExprNode objects are owned by unique_ptr after this point
+        delete type1;
+        delete type2;
+    }
+#line 1174 "parser.tab.cc"
+    break;
+
+  case 11: /* func_decl: IDENTIFIER LPAREN type_expr COMMA type_expr RPAREN ARROW type_expr  */
+#line 101 "parser.yy"
+                                                                         {
+        // Get type names from type expressions
+        TypeExprNode* type1 = static_cast<TypeExprNode*>((yyvsp[-5].expr));
+        TypeExprNode* type2 = static_cast<TypeExprNode*>((yyvsp[-3].expr));
+        TypeExprNode* returnType = static_cast<TypeExprNode*>((yyvsp[0].expr));
+        
+        (yyval.funcDecl) = new FuncDeclNode(*(yyvsp[-7].sval), type1->type + ", " + type2->type, returnType->type);
+        delete (yyvsp[-7].sval);
+        
+        // TypeExprNode objects are owned by unique_ptr after this point
+        delete type1;
+        delete type2;
+        delete returnType;
+    }
+#line 1193 "parser.tab.cc"
+    break;
+
+  case 12: /* block: IDENTIFIER IDENTIFIER LPAREN IDENTIFIER COMMA IDENTIFIER RPAREN ARROW NUMBER COMMA HTTP_OK  */
+#line 154 "parser.yy"
+                                                                                               {
         vector<unique_ptr<ExprNode>> args;
-        args.push_back(unique_ptr<ExprNode>((yyvsp[-3].expr)));
-        args.push_back(unique_ptr<ExprNode>((yyvsp[-1].expr)));
-        (yyval.funcCall) = new FuncCallNode(*(yyvsp[-5].sval), std::move(args));
-        delete (yyvsp[-5].sval);
+        args.push_back(unique_ptr<ExprNode>(new VarNode(*(yyvsp[-7].sval))));
+        args.push_back(unique_ptr<ExprNode>(new VarNode(*(yyvsp[-5].sval))));
+        
+        FuncCallNode* funcCall = new FuncCallNode(*(yyvsp[-9].sval), std::move(args));
+        ResponseNode* response = new ResponseNode(unique_ptr<ExprNode>(new NumNode((yyvsp[-2].ival))), "HTTP_OK");
+        
+        (yyval.block) = new BlockNode(
+            unique_ptr<ExprNode>(new VarNode(*(yyvsp[-10].sval))),
+            unique_ptr<APICallNode>(new APICallNode(
+                unique_ptr<FuncCallNode>(funcCall)
+            )),
+            unique_ptr<ResponseNode>(response)
+        );
+        
+        delete (yyvsp[-10].sval); delete (yyvsp[-9].sval); delete (yyvsp[-7].sval); delete (yyvsp[-5].sval);
     }
-#line 1146 "parser.tab.cc"
-    break;
-
-  case 8: /* expr: IDENTIFIER  */
-#line 92 "parser.yy"
-               { (yyval.expr) = new VarNode(*(yyvsp[0].sval)); delete (yyvsp[0].sval); }
-#line 1152 "parser.tab.cc"
-    break;
-
-  case 9: /* expr: NUMBER  */
-#line 93 "parser.yy"
-           { (yyval.expr) = new NumNode((yyvsp[0].ival)); }
-#line 1158 "parser.tab.cc"
-    break;
-
-  case 10: /* response: NUMBER COMMA IDENTIFIER  */
-#line 98 "parser.yy"
-                            {
-        (yyval.response) = new ResponseNode(unique_ptr<ExprNode>(new NumNode((yyvsp[-2].ival))), *(yyvsp[0].sval));
-        delete (yyvsp[0].sval);
-    }
-#line 1167 "parser.tab.cc"
-    break;
-
-  case 11: /* block: IDENTIFIER api_call response  */
-#line 106 "parser.yy"
-                                 {
-        (yyval.block) = new BlockNode(unique_ptr<ExprNode>(new VarNode(*(yyvsp[-2].sval))), unique_ptr<APICallNode>((yyvsp[-1].apiCall)), unique_ptr<ResponseNode>((yyvsp[0].response)));
-        delete (yyvsp[-2].sval);
-    }
-#line 1176 "parser.tab.cc"
+#line 1216 "parser.tab.cc"
     break;
 
 
-#line 1180 "parser.tab.cc"
+#line 1220 "parser.tab.cc"
 
       default: break;
     }
@@ -1369,10 +1409,10 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 112 "parser.yy"
+#line 174 "parser.yy"
 
 
 // Error handling
 void yyerror(const char *s) {
-    fprintf(stderr, "Error: %s\n", s);
+    fprintf(stderr, "Error: %s at or near token '%s'\n", s, yytext);
 }

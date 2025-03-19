@@ -7,6 +7,7 @@
 
 void yyerror(const char *s);
 int yylex();
+extern char* yytext;  // Add this line to declare yytext
 using namespace std;
 unique_ptr<SpecNode> root; // Root node of AST
 %}
@@ -38,6 +39,7 @@ unique_ptr<SpecNode> root; // Root node of AST
 %type <response> response
 %type <block> block
 %type <funcDecl> func_decl
+%type <expr> type_expr
 
 %left ARROW
 
@@ -59,13 +61,56 @@ start:
         // Add block to the root
         root->blocks.push_back(unique_ptr<BlockNode>($2));
     }
+    | func_decl {
+        // Start directly with a function declaration
+        vector<unique_ptr<FuncDeclNode>> functions;
+        vector<unique_ptr<BlockNode>> blocks;
+        functions.push_back(unique_ptr<FuncDeclNode>($1));
+        root = make_unique<SpecNode>(std::move(functions), std::move(blocks));
+    }
+    | block {
+        // Start directly with a block
+        vector<unique_ptr<FuncDeclNode>> functions;
+        vector<unique_ptr<BlockNode>> blocks;
+        blocks.push_back(unique_ptr<BlockNode>($1));
+        root = make_unique<SpecNode>(std::move(functions), std::move(blocks));
+    }
+;
+
+// Type expression (string, int, etc.)
+type_expr:
+    STRING { $$ = new TypeExprNode("string"); }
+    | INT { $$ = new TypeExprNode("int"); }
+    | HTTP_RESPONSE_CODE { $$ = new TypeExprNode("HTTPResponseCode"); }
 ;
 
 // Function Declaration
 func_decl:
-    IDENTIFIER LPAREN IDENTIFIER COMMA IDENTIFIER RPAREN ARROW IDENTIFIER {
-        $$ = new FuncDeclNode(*$1, *$3 + ", " + *$5, *$8);
-        delete $1; delete $3; delete $5; delete $8;
+    IDENTIFIER LPAREN type_expr COMMA type_expr RPAREN ARROW IDENTIFIER {
+        // Get type names from type expressions
+        TypeExprNode* type1 = static_cast<TypeExprNode*>($3);
+        TypeExprNode* type2 = static_cast<TypeExprNode*>($5);
+        
+        $$ = new FuncDeclNode(*$1, type1->type + ", " + type2->type, *$8);
+        delete $1; delete $8;
+        
+        // TypeExprNode objects are owned by unique_ptr after this point
+        delete type1;
+        delete type2;
+    }
+    | IDENTIFIER LPAREN type_expr COMMA type_expr RPAREN ARROW type_expr {
+        // Get type names from type expressions
+        TypeExprNode* type1 = static_cast<TypeExprNode*>($3);
+        TypeExprNode* type2 = static_cast<TypeExprNode*>($5);
+        TypeExprNode* returnType = static_cast<TypeExprNode*>($8);
+        
+        $$ = new FuncDeclNode(*$1, type1->type + ", " + type2->type, returnType->type);
+        delete $1;
+        
+        // TypeExprNode objects are owned by unique_ptr after this point
+        delete type1;
+        delete type2;
+        delete returnType;
     }
 ;
 
@@ -99,13 +144,30 @@ response:
         $$ = new ResponseNode(unique_ptr<ExprNode>(new NumNode($1)), *$3);
         delete $3;
     }
+    | NUMBER COMMA HTTP_OK {
+        $$ = new ResponseNode(unique_ptr<ExprNode>(new NumNode($1)), "HTTP_OK");
+    }
 ;
 
 // Block (Precondition + API Call + Response)
 block:
-    IDENTIFIER api_call response {
-        $$ = new BlockNode(unique_ptr<ExprNode>(new VarNode(*$1)), unique_ptr<APICallNode>($2), unique_ptr<ResponseNode>($3));
-        delete $1;
+    IDENTIFIER IDENTIFIER LPAREN IDENTIFIER COMMA IDENTIFIER RPAREN ARROW NUMBER COMMA HTTP_OK {
+        vector<unique_ptr<ExprNode>> args;
+        args.push_back(unique_ptr<ExprNode>(new VarNode(*$4)));
+        args.push_back(unique_ptr<ExprNode>(new VarNode(*$6)));
+        
+        FuncCallNode* funcCall = new FuncCallNode(*$2, std::move(args));
+        ResponseNode* response = new ResponseNode(unique_ptr<ExprNode>(new NumNode($9)), "HTTP_OK");
+        
+        $$ = new BlockNode(
+            unique_ptr<ExprNode>(new VarNode(*$1)),
+            unique_ptr<APICallNode>(new APICallNode(
+                unique_ptr<FuncCallNode>(funcCall)
+            )),
+            unique_ptr<ResponseNode>(response)
+        );
+        
+        delete $1; delete $2; delete $4; delete $6;
     }
 ;
 
@@ -113,5 +175,5 @@ block:
 
 // Error handling
 void yyerror(const char *s) {
-    fprintf(stderr, "Error: %s\n", s);
+    fprintf(stderr, "Error: %s at or near token '%s'\n", s, yytext);
 }

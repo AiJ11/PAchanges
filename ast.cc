@@ -12,50 +12,70 @@ void NumNode::print() const { cout << value; }
 
 // Function Call Node
 FuncCallNode::FuncCallNode(const string &name, vector<unique_ptr<ExprNode>> args)
-    : funcName(name), arguments(std::move(args)) {}
-
+ : funcName(name), arguments(std::move(args)) {}
 void FuncCallNode::print() const {
     cout << funcName << "(";
     for (size_t i = 0; i < arguments.size(); ++i) {
-        arguments[i]->print();
+        if (arguments[i]) {
+            arguments[i]->print();
+        } else {
+            cout << "null";
+        }
         if (i < arguments.size() - 1) cout << ", ";
     }
     cout << ")";
 }
 
 // API Call Node
-APICallNode::APICallNode(unique_ptr<FuncCallNode> call, unique_ptr<ExprNode> resp)
-    : funcCall(std::move(call)), response(std::move(resp)) {}
-
+APICallNode::APICallNode(unique_ptr<FuncCallNode> call)
+ : funcCall(std::move(call)) {}  // No response field
 void APICallNode::print() const {
     cout << "APICall: ";
-    funcCall->print();
-    cout << " -> ";
-    response->print();
+    if (funcCall) {
+        funcCall->print();
+    } else {
+        cout << "null function call";
+    }
 }
 
 // HTTP Response Node
 ResponseNode::ResponseNode(unique_ptr<ExprNode> resp, const string &code)
-    : responseExpr(std::move(resp)), httpCode(code) {}
-
+ : responseExpr(std::move(resp)), httpCode(code) {}
 void ResponseNode::print() const {
     cout << "Response: ";
-    responseExpr->print();
+    if (responseExpr) {
+        responseExpr->print();
+    } else {
+        cout << "null";
+    }
     cout << ", HTTP Code: " << httpCode;
 }
 
 // Block Node
 BlockNode::BlockNode(unique_ptr<ExprNode> pre, unique_ptr<APICallNode> call, unique_ptr<ResponseNode> resp)
-    : precondition(std::move(pre)), apiCall(std::move(call)), response(std::move(resp)) {}
-
+ : precondition(std::move(pre)), apiCall(std::move(call)), response(std::move(resp)) {}
 void BlockNode::print() const {
     cout << "Block {" << endl;
-    cout << "  Precondition: ";
-    precondition->print();
+    cout << " Precondition: ";
+    if (precondition) {
+        precondition->print();
+    } else {
+        cout << "none";
+    }
     cout << endl;
-    apiCall->print();
+    
+    if (apiCall) {
+        apiCall->print();
+    } else {
+        cout << "No API call";
+    }
     cout << endl;
-    response->print();
+    
+    if (response) {
+        response->print();
+    } else {
+        cout << "No response";
+    }
     cout << endl << "}" << endl;
 }
 
