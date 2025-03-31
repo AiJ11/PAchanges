@@ -455,16 +455,16 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  7
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   29
+#define YYLAST   30
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  14
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  5
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  12
+#define YYNRULES  14
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  29
+#define YYNSTATES  31
 
 /* YYMAXUTOK -- Last valid token kind.  */
 #define YYMAXUTOK   268
@@ -515,7 +515,7 @@ static const yytype_int8 yytranslate[] =
 static const yytype_uint8 yyrline[] =
 {
        0,    50,    50,    56,    60,    64,    71,    82,    83,    84,
-      89,   101,   154
+      85,    86,    91,   103,   156
 };
 #endif
 
@@ -544,7 +544,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-16)
+#define YYPACT_NINF (-18)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -558,9 +558,10 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-       0,    -3,     2,   -16,   -16,    -5,     8,   -16,   -16,   -16,
-       6,   -16,   -16,   -16,     7,     9,     8,    13,    11,    12,
-      14,    15,     5,    19,   -16,   -16,    17,    16,   -16
+       0,    -3,     2,   -18,   -18,    -5,     5,   -18,   -18,   -18,
+      15,   -18,   -18,   -18,   -18,   -18,     8,     9,     5,    18,
+      12,    13,    14,    16,    10,    20,   -18,   -18,    19,    17,
+     -18
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -569,20 +570,21 @@ static const yytype_int8 yypact[] =
 static const yytype_int8 yydefact[] =
 {
        2,     0,     0,     5,     6,     0,     0,     1,     3,     4,
-       0,     7,     8,     9,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,    10,    11,     0,     0,    12
+       0,    10,    11,     7,     8,     9,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,    10,    13,     0,     0,
+      14
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -16,   -16,   -15,    23,    27
+     -18,   -18,   -17,    25,    27
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,     2,    14,     3,     4
+       0,     2,    16,     3,     4
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -590,16 +592,18 @@ static const yytype_int8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-       5,    18,     7,     1,    10,     1,     6,    25,    24,    15,
-      11,    12,    13,    11,    12,    13,    19,     0,    16,     0,
-      17,    20,    21,    26,    28,     8,    22,    23,    27,     9
+       5,    20,     7,     1,    10,     1,     6,    27,    11,    12,
+      13,    14,    15,    26,    12,    13,    14,    15,    17,    18,
+      19,    21,    22,    23,    28,    30,    24,     8,    25,     9,
+      29
 };
 
 static const yytype_int8 yycheck[] =
 {
-       3,    16,     0,     3,     9,     3,     9,    22,     3,     3,
-       5,     6,     7,     5,     6,     7,     3,    -1,    11,    -1,
-      11,    10,    10,     4,     8,     2,    12,    12,    11,     2
+       3,    18,     0,     3,     9,     3,     9,    24,     3,     4,
+       5,     6,     7,     3,     4,     5,     6,     7,     3,    11,
+      11,     3,    10,    10,     4,     8,    12,     2,    12,     2,
+      11
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
@@ -607,22 +611,23 @@ static const yytype_int8 yycheck[] =
 static const yytype_int8 yystos[] =
 {
        0,     3,    15,    17,    18,     3,     9,     0,    17,    18,
-       9,     5,     6,     7,    16,     3,    11,    11,    16,     3,
-      10,    10,    12,    12,     3,    16,     4,    11,     8
+       9,     3,     4,     5,     6,     7,    16,     3,    11,    11,
+      16,     3,    10,    10,    12,    12,     3,    16,     4,    11,
+       8
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
        0,    14,    15,    15,    15,    15,    15,    16,    16,    16,
-      17,    17,    18
+      16,    16,    17,    17,    18
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr2[] =
 {
        0,     2,     0,     2,     2,     1,     1,     1,     1,     1,
-       8,     8,    11
+       1,     1,     8,     8,    11
 };
 
 
@@ -1093,7 +1098,7 @@ yyreduce:
         vector<unique_ptr<BlockNode>> blocks;
         root = make_unique<SpecNode>(std::move(functions), std::move(blocks));
     }
-#line 1097 "parser.tab.cc"
+#line 1102 "parser.tab.cc"
     break;
 
   case 3: /* start: start func_decl  */
@@ -1102,7 +1107,7 @@ yyreduce:
         // Add function declaration to the root
         root->functions.push_back(unique_ptr<FuncDeclNode>((yyvsp[0].funcDecl)));
     }
-#line 1106 "parser.tab.cc"
+#line 1111 "parser.tab.cc"
     break;
 
   case 4: /* start: start block  */
@@ -1111,7 +1116,7 @@ yyreduce:
         // Add block to the root
         root->blocks.push_back(unique_ptr<BlockNode>((yyvsp[0].block)));
     }
-#line 1115 "parser.tab.cc"
+#line 1120 "parser.tab.cc"
     break;
 
   case 5: /* start: func_decl  */
@@ -1123,7 +1128,7 @@ yyreduce:
         functions.push_back(unique_ptr<FuncDeclNode>((yyvsp[0].funcDecl)));
         root = make_unique<SpecNode>(std::move(functions), std::move(blocks));
     }
-#line 1127 "parser.tab.cc"
+#line 1132 "parser.tab.cc"
     break;
 
   case 6: /* start: block  */
@@ -1135,29 +1140,41 @@ yyreduce:
         blocks.push_back(unique_ptr<BlockNode>((yyvsp[0].block)));
         root = make_unique<SpecNode>(std::move(functions), std::move(blocks));
     }
-#line 1139 "parser.tab.cc"
+#line 1144 "parser.tab.cc"
     break;
 
   case 7: /* type_expr: STRING  */
 #line 82 "parser.yy"
            { (yyval.expr) = new TypeExprNode("string"); }
-#line 1145 "parser.tab.cc"
+#line 1150 "parser.tab.cc"
     break;
 
   case 8: /* type_expr: INT  */
 #line 83 "parser.yy"
           { (yyval.expr) = new TypeExprNode("int"); }
-#line 1151 "parser.tab.cc"
+#line 1156 "parser.tab.cc"
     break;
 
   case 9: /* type_expr: HTTP_RESPONSE_CODE  */
 #line 84 "parser.yy"
                          { (yyval.expr) = new TypeExprNode("HTTPResponseCode"); }
-#line 1157 "parser.tab.cc"
+#line 1162 "parser.tab.cc"
     break;
 
-  case 10: /* func_decl: IDENTIFIER LPAREN type_expr COMMA type_expr RPAREN ARROW IDENTIFIER  */
-#line 89 "parser.yy"
+  case 10: /* type_expr: IDENTIFIER  */
+#line 85 "parser.yy"
+                 { (yyval.expr) = new TypeExprNode(*(yyvsp[0].sval)); delete (yyvsp[0].sval); }
+#line 1168 "parser.tab.cc"
+    break;
+
+  case 11: /* type_expr: NUMBER  */
+#line 86 "parser.yy"
+             { (yyval.expr) = new TypeExprNode(std::to_string((yyvsp[0].ival))); }
+#line 1174 "parser.tab.cc"
+    break;
+
+  case 12: /* func_decl: IDENTIFIER LPAREN type_expr COMMA type_expr RPAREN ARROW IDENTIFIER  */
+#line 91 "parser.yy"
                                                                         {
         // Get type names from type expressions
         TypeExprNode* type1 = static_cast<TypeExprNode*>((yyvsp[-5].expr));
@@ -1170,11 +1187,11 @@ yyreduce:
         delete type1;
         delete type2;
     }
-#line 1174 "parser.tab.cc"
+#line 1191 "parser.tab.cc"
     break;
 
-  case 11: /* func_decl: IDENTIFIER LPAREN type_expr COMMA type_expr RPAREN ARROW type_expr  */
-#line 101 "parser.yy"
+  case 13: /* func_decl: IDENTIFIER LPAREN type_expr COMMA type_expr RPAREN ARROW type_expr  */
+#line 103 "parser.yy"
                                                                          {
         // Get type names from type expressions
         TypeExprNode* type1 = static_cast<TypeExprNode*>((yyvsp[-5].expr));
@@ -1189,11 +1206,11 @@ yyreduce:
         delete type2;
         delete returnType;
     }
-#line 1193 "parser.tab.cc"
+#line 1210 "parser.tab.cc"
     break;
 
-  case 12: /* block: IDENTIFIER IDENTIFIER LPAREN IDENTIFIER COMMA IDENTIFIER RPAREN ARROW NUMBER COMMA HTTP_OK  */
-#line 154 "parser.yy"
+  case 14: /* block: IDENTIFIER IDENTIFIER LPAREN IDENTIFIER COMMA IDENTIFIER RPAREN ARROW NUMBER COMMA HTTP_OK  */
+#line 156 "parser.yy"
                                                                                                {
         vector<unique_ptr<ExprNode>> args;
         args.push_back(unique_ptr<ExprNode>(new VarNode(*(yyvsp[-7].sval))));
@@ -1212,11 +1229,11 @@ yyreduce:
         
         delete (yyvsp[-10].sval); delete (yyvsp[-9].sval); delete (yyvsp[-7].sval); delete (yyvsp[-5].sval);
     }
-#line 1216 "parser.tab.cc"
+#line 1233 "parser.tab.cc"
     break;
 
 
-#line 1220 "parser.tab.cc"
+#line 1237 "parser.tab.cc"
 
       default: break;
     }
@@ -1409,7 +1426,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 174 "parser.yy"
+#line 176 "parser.yy"
 
 
 // Error handling

@@ -34,7 +34,7 @@ const char* token_name(int token) {
 
 int main(int argc, char* argv[]) {
     if (argc > 1) {
-        file_input.open(argv[1]); // Open input file if provided
+        file_input.open(argv[1]); // Opening input file 
         if (!file_input) {
             std::cerr << "Error: Cannot open file " << argv[1] << std::endl;
             return 1;
@@ -60,7 +60,7 @@ int main(int argc, char* argv[]) {
 int parseResult = yyparse();
 
 if (parseResult == 0 && root) {  // 0 indicates successful parsing
-    std::cout << "\nAbstract Syntax Tree (AST):\n";
+    std::cout << "\nAbstract Syntax:\n";
     root->print();
 } else {
     std::cout << "Parsing failed! No AST generated.\n";

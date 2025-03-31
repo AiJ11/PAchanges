@@ -1,1 +1,6 @@
-   isAuthenticated login(userID, password) -> 200, HTTP_OK
+isAuthenticated login(userID, password) -> 200, HTTP_OK 
+      /*signup(aira, 123) -> HTTPResponseCode*/
+       /* signup(aira, password) -> HTTPResponseCode */
+
+ 
+   

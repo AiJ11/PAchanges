@@ -77,11 +77,13 @@ start:
     }
 ;
 
-// Type expression (string, int, etc.)
+// Type expression (string, int, etc. or type variables)
 type_expr:
     STRING { $$ = new TypeExprNode("string"); }
     | INT { $$ = new TypeExprNode("int"); }
     | HTTP_RESPONSE_CODE { $$ = new TypeExprNode("HTTPResponseCode"); }
+    | IDENTIFIER { $$ = new TypeExprNode(*$1); delete $1; }  // doubt if i can add identifiers as type?
+    | NUMBER { $$ = new TypeExprNode(std::to_string($1)); }  // to accept numbers in parameters 
 ;
 
 // Function Declaration

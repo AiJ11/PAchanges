@@ -1,5 +1,12 @@
-make --dry-run --keep-going --print-directory
+make --dry-run --always-make --keep-going --print-directory
 make: Entering directory `/Users/apple/Desktop/parse'
-make: Nothing to be done for `all'.
+bison -d parser.yy -o parser.tab.cc
+g++ -std=c++17 -Wall -Wextra -c parser.tab.cc -o parser.tab.o
+bison -d parser.yy -o parser.tab.cc
+flex lexer.ll
+g++ -std=c++17 -Wall -Wextra -c lexer.yy.cc -o lexer.yy.o
+g++ -std=c++17 -Wall -Wextra -c ast.cc -o ast.o
+g++ -std=c++17 -Wall -Wextra -c main.cc -o main.o
+g++ -std=c++17 -Wall -Wextra -o parser parser.tab.o lexer.yy.o ast.o main.o
 make: Leaving directory `/Users/apple/Desktop/parse'
  
