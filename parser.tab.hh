@@ -58,13 +58,59 @@ extern int yydebug;
     NUMBER = 259,                  /* NUMBER  */
     STRING = 260,                  /* STRING  */
     INT = 261,                     /* INT  */
-    HTTP_RESPONSE_CODE = 262,      /* HTTP_RESPONSE_CODE  */
-    HTTP_OK = 263,                 /* HTTP_OK  */
-    LPAREN = 264,                  /* LPAREN  */
-    RPAREN = 265,                  /* RPAREN  */
-    COMMA = 266,                   /* COMMA  */
-    ARROW = 267,                   /* ARROW  */
-    UNKNOWN = 268                  /* UNKNOWN  */
+    MAP = 262,                     /* MAP  */
+    TOKEN = 263,                   /* TOKEN  */
+    ROLE = 264,                    /* ROLE  */
+    PROGRAM = 265,                 /* PROGRAM  */
+    TYPE = 266,                    /* TYPE  */
+    HTTP_RESPONSE_CODE = 267,      /* HTTP_RESPONSE_CODE  */
+    HTTP_OK = 268,                 /* HTTP_OK  */
+    NIL = 269,                     /* NIL  */
+    OK = 270,                      /* OK  */
+    LPAREN = 271,                  /* LPAREN  */
+    RPAREN = 272,                  /* RPAREN  */
+    LANGLE = 273,                  /* LANGLE  */
+    RANGLE = 274,                  /* RANGLE  */
+    LBRACKET = 275,                /* LBRACKET  */
+    RBRACKET = 276,                /* RBRACKET  */
+    LBRACE = 277,                  /* LBRACE  */
+    RBRACE = 278,                  /* RBRACE  */
+    COMMA = 279,                   /* COMMA  */
+    COLON = 280,                   /* COLON  */
+    ARROW = 281,                   /* ARROW  */
+    MAPARROW = 282,                /* MAPARROW  */
+    IMPL_ARROW = 283,              /* IMPL_ARROW  */
+    EQUALS = 284,                  /* EQUALS  */
+    PLUS = 285,                    /* PLUS  */
+    MINUS = 286,                   /* MINUS  */
+    MULTIPLY = 287,                /* MULTIPLY  */
+    DIVIDE = 288,                  /* DIVIDE  */
+    EQ = 289,                      /* EQ  */
+    NEQ = 290,                     /* NEQ  */
+    UNION = 291,                   /* UNION  */
+    IN = 292,                      /* IN  */
+    AND = 293,                     /* AND  */
+    OR = 294,                      /* OR  */
+    SUCH_THAT = 295,               /* SUCH_THAT  */
+    NOT_EXISTS = 296,              /* NOT_EXISTS  */
+    PRIME = 297,                   /* PRIME  */
+    PIPE = 298,                    /* PIPE  */
+    UNKNOWN = 299,                 /* UNKNOWN  */
+    TYPES_HEADER = 300,            /* TYPES_HEADER  */
+    GLOBAL_DATA_HEADER = 301,      /* GLOBAL_DATA_HEADER  */
+    APIS_HEADER = 302,             /* APIS_HEADER  */
+    INIT_HEADER = 303,             /* INIT_HEADER  */
+    PRECONDITION = 304,            /* PRECONDITION  */
+    POSTCONDITION = 305,           /* POSTCONDITION  */
+    SET = 306,                     /* SET  */
+    ADMIN = 307,                   /* ADMIN  */
+    DOT = 308,                     /* DOT  */
+    EXISTS = 309,                  /* EXISTS  */
+    FACULTY = 310,                 /* FACULTY  */
+    APPLICATION = 311,             /* APPLICATION  */
+    PROFILE_DATA = 312,            /* PROFILE_DATA  */
+    REFERRAL = 313,                /* REFERRAL  */
+    PENDING = 314                  /* PENDING  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -73,20 +119,28 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 16 "parser.yy"
+#line 22 "parser.yy"
 
-    int ival;
-    std::string *sval;
-    ExprNode *expr;
-    FuncCallNode *funcCall;
-    APICallNode *apiCall;
-    ResponseNode *response;
-    BlockNode *block;
-    FuncDeclNode *funcDecl;
-    TypeExprNode *typeExpr;
-    SpecNode *spec;
+    int ival;                      // integer values
+    std::string *sval;             // string values (identifiers)
+    ExprNode *expr;                // expression nodes
+    FuncCallNode *funcCall;        // function call nodes
+    APICallNode *apiCall;          // API call nodes
+    ResponseNode *response;        // response nodes
+    BlockNode *block;              // block nodes
+    FuncDeclNode *funcDecl;        // function declaration nodes
+    TypeExprNode *typeExpr;        // type expression nodes
+    MapTypeNode *mapType;          // map type nodes
+    SetTypeNode *setType;          // set type nodes
+    GlobalVarNode *globalVar;      // global variable nodes
+    MapDeclNode *mapDecl;          // map declaration nodes
+    SetElementListNode *setElems;  // set element list nodes
+    NestedSetListNode *nestedSet;  // nested set list nodes
+    ApiSpecNode *apiSpec;          // API specification nodes
+    SpecNode *spec;                // specification nodes
+    ASTNode *node;                 // base class for any AST node
 
-#line 90 "parser.tab.hh"
+#line 144 "parser.tab.hh"
 
 };
 typedef union YYSTYPE YYSTYPE;

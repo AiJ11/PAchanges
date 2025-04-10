@@ -1,6 +1,23 @@
-isAuthenticated login(userID, password) -> 200, HTTP_OK 
-      /*signup(aira, 123) -> HTTPResponseCode*/
-       /* signup(aira, password) -> HTTPResponseCode */
+     
 
- 
-   
+
+      /* API specifications */
+SIGNUP_OK:
+PRECONDITION: U[uid] = NIL
+signup(uid, p) ==> (OK)
+POSTCONDITION: U' = U[uid -> p]
+
+LOGIN_OK:
+PRECONDITION: U[uid] = p
+login(uid, p) ==> (OK, t)
+POSTCONDITION: T' = T[t -> uid] AND L' = L union {uid}
+
+      /*CREATEPROGRAM_OK:
+PRECONDITION: (t -> u in T and u in U) AND (role = ADMIN) AND (not_exists p in P s.t. p.name = programName)
+createProgram(t, programName) ==> (OK, id)
+POSTCONDITION: P' = P union Program{id, programName}*/
+
+      /*DELETEPROGRAM_OK:
+PRECONDITION: T[t -> uid] AND role = ADMIN AND exists p in P s.t. p.id = programId
+deleteProgram(t, programId) ==> (OK)
+POSTCONDITION: P' = P - {programId}*/
